@@ -46,8 +46,8 @@ Tickers: **`$STAR`** **`$COMMIT`** **`$FORK`** -- the currency of GitHub, traded
 xychart-beta
   title "Volume by Ticker"
   x-axis ["$STAR", "$COMMIT", "$FORK"]
-  y-axis "Volume" 0 --> 200
-  bar [0, 0, 0]
+  y-axis "Volume" 0 --> 130
+  bar [30, 20, 100]
 ```
 <!-- MERMAID_END -->
 
@@ -151,5 +151,5 @@ state.json + README.md + assets/  committed to main
 - **State:** lives in `state.json` -- the repo IS the exchange
 
 <!-- TIMESTAMP_START -->
-> Last updated: 2026-05-25 17:55 UTC
+> Last updated: 2026-05-25 20:48 UTC
 <!-- TIMESTAMP_END -->
