@@ -248,6 +248,8 @@ def build_ticker_section(state: dict, ticker: str) -> str:
     return f"""\
 <img src="assets/{ticker.lower()}-price.svg" width="49%"> <img src="assets/{ticker.lower()}-depth.svg" width="49%">
 
+<img src="assets/{ticker.lower()}-flow.svg" width="100%">
+
 **Order Book**
 
 | Bid Qty | Price | Ask Qty |
@@ -264,7 +266,7 @@ def build_ticker_section(state: dict, ticker: str) -> str:
 def build_leaderboard(state: dict) -> str:
     lb = state["leaderboard"]
     if not lb:
-        return "*No trades yet. Open an issue to start trading.*"
+        return '<img src="assets/leaderboard.svg" width="100%">\n\n*No trades yet. Open an issue to start trading.*'
 
     for user, entry in lb.items():
         pnl = 0.0
@@ -284,7 +286,8 @@ def build_leaderboard(state: dict) -> str:
         rows.append(f"| {rank} | @{user} | {entry['volume']:,.0f} | {entry['trades']} | {pnl_str} |")
 
     header = "| Rank | Trader | Volume | Trades | P&L |\n|------|--------|--------|--------|-----|"
-    return header + "\n" + "\n".join(rows)
+    table = header + "\n" + "\n".join(rows)
+    return f'<img src="assets/leaderboard.svg" width="100%">\n\n{table}'
 
 
 def update_readme(state: dict):
