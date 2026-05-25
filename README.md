@@ -14,8 +14,8 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 | Ticker | Last | Volume | Spread |
 |--------|------|--------|--------|
 | **$STAR** | 98.00 | 30 | -- |
-| **$COMMIT** | -- | 0 | -- |
-| **$FORK** | -- | 0 | -- |
+| **$COMMIT** | 48.00 | 20 | -- |
+| **$FORK** | 9.00 | 100 | -- |
 <!-- STATS_END -->
 
 ---
@@ -55,7 +55,7 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 
 | Time | Price | Qty |
 |------|------:|----:|
-| | *no trades yet* | |
+| 17:44 UTC | 48.00 | 20 |
 <!-- COMMIT_END -->
 
 ---
@@ -75,7 +75,7 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 
 | Time | Price | Qty |
 |------|------:|----:|
-| | *no trades yet* | |
+| 17:43 UTC | 9.00 | 100 |
 <!-- FORK_END -->
 
 ---
@@ -85,7 +85,7 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 <!-- LEADERBOARD_START -->
 | Rank | Trader | Volume | Trades | P&L |
 |------|--------|--------|--------|-----|
-| 1 | @saksham10arora-dotcom | 5,880 | 2 | +0 |
+| 1 | @saksham10arora-dotcom | 9,600 | 6 | +0 |
 <!-- LEADERBOARD_END -->
 
 ---
@@ -109,5 +109,5 @@ state.json + README.md + assets/ committed to main
 - State lives in `state.json`. The repo IS the exchange.
 
 <!-- TIMESTAMP_START -->
-> Last updated: 2026-05-25 17:42 UTC
+> Last updated: 2026-05-25 17:44 UTC
 <!-- TIMESTAMP_END -->
