@@ -20,6 +20,7 @@
 <!-- ORDERBOOK_START -->
 ## 📊 Live Order Book
 
+
 | Bid Qty | Price | Ask Qty |
 |--------:|------:|:--------|
 | | *empty* | |
@@ -30,7 +31,7 @@
 |------|------:|----:|
 | | *no trades yet* | |
 
-> Last updated: never
+> Last updated: 2026-05-25 16:13 UTC
 <!-- ORDERBOOK_END -->
 
 ## How it works
