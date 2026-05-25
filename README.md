@@ -23,7 +23,7 @@
 
 | Bid Qty | Price | Ask Qty |
 |--------:|------:|:--------|
-| | *empty* | |
+| **10** | 100.00 |  |
 
 ## 🔄 Recent Trades (last 10)
 
@@ -31,7 +31,7 @@
 |------|------:|----:|
 | | *no trades yet* | |
 
-> Last updated: 2026-05-25 16:13 UTC
+> Last updated: 2026-05-25 16:18 UTC
 <!-- ORDERBOOK_END -->
 
 ## How it works

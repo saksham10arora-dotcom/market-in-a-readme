@@ -1,5 +1,14 @@
 {
-  "bids": [],
+  "bids": [
+    {
+      "side": "BUY",
+      "qty": 10.0,
+      "price": 100.0,
+      "issue": 1,
+      "ts": 1779725574.0,
+      "user": "saksham10arora-dotcom"
+    }
+  ],
   "asks": [],
   "trades": [],
   "filled_issues": []
