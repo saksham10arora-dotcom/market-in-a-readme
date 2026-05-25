@@ -1,8 +1,8 @@
-# market-in-a-readme
+# gitrade
 
 > The only exchange where you can short $COMMIT. On GitHub. In a README.
 
-**[Live Dashboard](https://saksham10arora-dotcom.github.io/market-in-a-readme/)** | Trade now: open an issue titled `BUY 10 STAR @ 100`
+**[Live Dashboard](https://saksham10arora-dotcom.github.io/gitrade/)** | Trade now: open an issue titled `BUY 10 STAR @ 100`
 
 **How to trade:** Open an issue titled `BUY 10 STAR @ 100` | `SELL 5 COMMIT @ 48` | `MARKET BUY 10 FORK` | `CANCEL #7`
 
