@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>market-in-a-readme | Live Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0d1117;
+      --surface: #161b22;
+      --border:  #30363d;
+      --text:    #c9d1d9;
+      --muted:   #8b949e;
+      --green:   #3fb950;
+      --red:     #f85149;
+      --blue:    #58a6ff;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    header h1 { font-size: 18px; color: var(--blue); }
+    header p  { font-size: 12px; color: var(--muted); }
+
+    .trade-btn {
+      background: var(--green);
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) { .stat-cards { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .card .ticker { font-size: 16px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+    .card .last   { font-size: 28px; font-weight: 700; }
+    .card .meta   { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .card .up   { color: var(--green); }
+    .card .down { color: var(--red); }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: var(--muted);
+      padding: 8px 20px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--blue);
+    }
+
+    .chart-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      height: 240px;
+      position: relative;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .panel h3 { font-size: 13px; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { color: var(--muted); font-weight: 500; text-align: right; padding: 4px 8px; font-size: 11px; border-bottom: 1px solid var(--border); }
+    th:first-child { text-align: left; }
+    td { padding: 5px 8px; text-align: right; border-bottom: 1px solid #21262d; }
+    td:first-child { text-align: left; }
+    tr:last-child td { border-bottom: none; }
+
+    .bid-row td { color: var(--green); }
+    .ask-row td { color: var(--red); }
+    .empty-row td { color: var(--muted); font-style: italic; text-align: center; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lb-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .rank-badge {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .rank-badge.gold   { background: #d4a017; color: #000; }
+    .rank-badge.silver { background: #8b949e; color: #000; }
+    .rank-badge.bronze { background: #cd7f32; color: #000; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 24px 0 32px;
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+
+    #refresh-info {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .pulse {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+      margin-right: 5px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>market-in-a-readme</h1>
+    <p>The only exchange where you can short $COMMIT. On GitHub. In a README.</p>
+  </div>
+  <a class="trade-btn" href="https://github.com/saksham10arora-dotcom/market-in-a-readme/issues/new" target="_blank">
+    + Open Trade
+  </a>
+</header>
+
+<main>
+  <div id="refresh-info"><span class="pulse"></span>Auto-refreshes every 60s</div>
+
+  <!-- Stat cards -->
+  <div class="stat-cards" id="stat-cards">
+    <div class="card" id="card-STAR"><div class="ticker">$STAR</div><div class="last">--</div><div class="meta">Vol: -- | Spread: --</div></div>
+    <div class="card" id="card-COMMIT"><div class="ticker">$COMMIT</div><div class="last">--</div><div class="meta">Vol: -- | Spread: --</div></div>
+    <div class="card" id="card-FORK"><div class="ticker">$FORK</div><div class="last">--</div><div class="meta">Vol: -- | Spread: --</div></div>
+  </div>
+
+  <!-- Ticker tabs + price chart -->
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" onclick="selectTicker('STAR', this)">$STAR</button>
+    <button class="tab-btn" onclick="selectTicker('COMMIT', this)">$COMMIT</button>
+    <button class="tab-btn" onclick="selectTicker('FORK', this)">$FORK</button>
+  </div>
+  <div class="chart-box">
+    <canvas id="priceChart"></canvas>
+  </div>
+
+  <!-- Order book + recent trades -->
+  <div class="two-col">
+    <div class="panel">
+      <h3>Order Book</h3>
+      <table>
+        <thead><tr><th>Bid Qty</th><th>Price</th><th>Ask Qty</th></tr></thead>
+        <tbody id="orderbook-body"></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Recent Trades</h3>
+      <table>
+        <thead><tr><th>Time</th><th>Price</th><th>Qty</th></tr></thead>
+        <tbody id="trades-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="lb-panel">
+    <div class="section-title">Leaderboard</div>
+    <table>
+      <thead><tr><th>Rank</th><th>Trader</th><th>Volume</th><th>Trades</th><th>P&L</th></tr></thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <p id="last-updated">Loading...</p>
+  <p style="margin-top:8px">
+    <a href="https://github.com/saksham10arora-dotcom/market-in-a-readme" target="_blank">View README</a>
+    &nbsp;|&nbsp;
+    <a href="https://github.com/saksham10arora-dotcom/market-in-a-readme/issues" target="_blank">All Orders</a>
+    &nbsp;|&nbsp;
+    Built by <a href="https://github.com/saksham10arora-dotcom" target="_blank">@saksham10arora-dotcom</a>
+  </p>
+</footer>
+
+<script>
+const STATE_URL = "https://raw.githubusercontent.com/saksham10arora-dotcom/market-in-a-readme/main/state.json";
+const TICKERS = ["STAR", "COMMIT", "FORK"];
+const GREEN = "#3fb950", RED = "#f85149", BLUE = "#58a6ff";
+const GRID = "#21262d", TEXT = "#c9d1d9", MUTED = "#8b949e";
+
+let state = null;
+let currentTicker = "STAR";
+let priceChart = null;
+
+// Chart.js global defaults
+Chart.defaults.color = TEXT;
+Chart.defaults.borderColor = GRID;
+Chart.defaults.font.family = 'monospace';
+
+function formatNum(n) {
+  if (n === null || n === undefined) return "--";
+  return n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+function formatVol(n) {
+  if (!n) return "0";
+  return n.toLocaleString(undefined, {maximumFractionDigits: 0});
+}
+
+function computeMid(tickerData) {
+  const bids = tickerData.bids;
+  const asks = tickerData.asks;
+  if (bids.length && asks.length) {
+    const bestBid = Math.max(...bids.map(b => b.price));
+    const bestAsk = Math.min(...asks.map(a => a.price));
+    return (bestBid + bestAsk) / 2;
+  }
+  if (tickerData.trades.length) return tickerData.trades[0].price;
+  return null;
+}
+
+function updateStatCards() {
+  TICKERS.forEach(ticker => {
+    const td = state[ticker];
+    const card = document.getElementById("card-" + ticker);
+    const trades = td.trades;
+    const last = trades.length ? trades[0].price : null;
+    const vol = trades.reduce((s, t) => s + t.qty, 0);
+    const bids = td.bids, asks = td.asks;
+    let spread = "--";
+    if (bids.length && asks.length) {
+      const bb = Math.max(...bids.map(b => b.price));
+      const ba = Math.min(...asks.map(a => a.price));
+      spread = formatNum(ba - bb);
+    }
+
+    // color by change
+    let cls = "";
+    if (trades.length >= 2) {
+      cls = trades[0].price >= trades[1].price ? "up" : "down";
+    }
+
+    card.querySelector(".last").textContent = last ? formatNum(last) : "--";
+    card.querySelector(".last").className = "last " + cls;
+    card.querySelector(".meta").textContent = `Vol: ${formatVol(vol)} | Spread: ${spread}`;
+  });
+}
+
+function updatePriceChart(ticker) {
+  const trades = [...state[ticker].trades].reverse();
+  const prices = trades.map(t => t.price);
+  const labels = trades.map((_, i) => `#${i + 1}`);
+
+  const color = prices.length >= 2 && prices[prices.length-1] >= prices[0] ? GREEN : RED;
+
+  if (priceChart) priceChart.destroy();
+
+  const ctx = document.getElementById("priceChart").getContext("2d");
+  priceChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        data: prices,
+        borderColor: color,
+        backgroundColor: color + "1a",
+        fill: true,
+        tension: 0.3,
+        pointRadius: prices.length > 20 ? 0 : 3,
+        pointHoverRadius: 5,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `Price: ${formatNum(ctx.parsed.y)}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: GRID }, ticks: { color: MUTED, maxTicksLimit: 8 } },
+        y: { grid: { color: GRID }, ticks: { color: MUTED } }
+      }
+    }
+  });
+}
+
+function updateOrderBook(ticker) {
+  const td = state[ticker];
+  const tbody = document.getElementById("orderbook-body");
+  tbody.innerHTML = "";
+
+  const bidMap = {}, askMap = {};
+  td.bids.forEach(b => bidMap[b.price] = (bidMap[b.price] || 0) + b.qty);
+  td.asks.forEach(a => askMap[a.price] = (askMap[a.price] || 0) + a.qty);
+
+  const prices = [...new Set([...Object.keys(bidMap), ...Object.keys(askMap)])].map(Number).sort((a,b) => b-a);
+
+  if (!prices.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No open orders</td></tr>';
+    return;
+  }
+
+  prices.forEach(p => {
+    const bid = bidMap[p] ? `<strong>${formatVol(bidMap[p])}</strong>` : "";
+    const ask = askMap[p] ? `<strong>${formatVol(askMap[p])}</strong>` : "";
+    const cls = bidMap[p] && !askMap[p] ? "bid-row" : askMap[p] && !bidMap[p] ? "ask-row" : "";
+    tbody.innerHTML += `<tr class="${cls}"><td>${bid}</td><td>${formatNum(p)}</td><td>${ask}</td></tr>`;
+  });
+}
+
+function updateTrades(ticker) {
+  const trades = state[ticker].trades.slice(0, 10);
+  const tbody = document.getElementById("trades-body");
+  tbody.innerHTML = "";
+  if (!trades.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No trades yet</td></tr>';
+    return;
+  }
+  trades.forEach(t => {
+    tbody.innerHTML += `<tr><td>${t.ts}</td><td>${formatNum(t.price)}</td><td>${formatVol(t.qty)}</td></tr>`;
+  });
+}
+
+function updateLeaderboard() {
+  const lb = state.leaderboard || {};
+  const tbody = document.getElementById("lb-body");
+  tbody.innerHTML = "";
+
+  const sorted = Object.entries(lb).sort((a,b) => b[1].volume - a[1].volume).slice(0, 10);
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No traders yet</td></tr>';
+    return;
+  }
+
+  sorted.forEach(([user, entry], i) => {
+    const rank = i + 1;
+    const badgeCls = rank === 1 ? "gold" : rank === 2 ? "silver" : rank === 3 ? "bronze" : "";
+    const pnl = entry.pnl || 0;
+    const pnlStr = pnl >= 0 ? `<span style="color:${GREEN}">+${pnl.toFixed(0)}</span>` : `<span style="color:${RED}">${pnl.toFixed(0)}</span>`;
+    tbody.innerHTML += `
+      <tr>
+        <td><span class="rank-badge ${badgeCls}">${rank}</span></td>
+        <td>@${user}</td>
+        <td>${formatVol(entry.volume)}</td>
+        <td>${entry.trades}</td>
+        <td>${pnlStr}</td>
+      </tr>`;
+  });
+}
+
+function selectTicker(ticker, btn) {
+  currentTicker = ticker;
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  updatePriceChart(ticker);
+  updateOrderBook(ticker);
+  updateTrades(ticker);
+}
+
+async function loadState() {
+  try {
+    const res = await fetch(STATE_URL + "?t=" + Date.now());
+    state = await res.json();
+    updateStatCards();
+    selectTicker(currentTicker, null);
+    updateLeaderboard();
+    const now = new Date().toUTCString();
+    document.getElementById("last-updated").textContent = "Last fetched: " + now;
+  } catch (e) {
+    console.error("Failed to load state:", e);
+    document.getElementById("last-updated").textContent = "Error loading data. Will retry...";
+  }
+}
+
+// Initial load + auto-refresh every 60s
+loadState();
+setInterval(loadState, 60000);
+</script>
+</body>
+</html>
