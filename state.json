@@ -1,7 +1,63 @@
 {
-  "STAR":   {"bids": [], "asks": [], "trades": [], "filled_issues": []},
-  "COMMIT": {"bids": [], "asks": [], "trades": [], "filled_issues": []},
-  "FORK":   {"bids": [], "asks": [], "trades": [], "filled_issues": []},
-  "portfolios": {},
-  "leaderboard": {}
+  "STAR": {
+    "bids": [
+      {
+        "issue": 4,
+        "qty": 20.0,
+        "price": 100.0,
+        "ts": 1779730902.0,
+        "user": "saksham10arora-dotcom"
+      }
+    ],
+    "asks": [],
+    "trades": [
+      {
+        "price": 98.0,
+        "qty": 30.0,
+        "ts": "17:42 UTC",
+        "bid_issue": 4,
+        "ask_issue": 5,
+        "bid_user": "saksham10arora-dotcom",
+        "ask_user": "saksham10arora-dotcom"
+      }
+    ],
+    "filled_issues": [
+      5
+    ]
+  },
+  "COMMIT": {
+    "bids": [],
+    "asks": [],
+    "trades": [],
+    "filled_issues": []
+  },
+  "FORK": {
+    "bids": [],
+    "asks": [],
+    "trades": [],
+    "filled_issues": []
+  },
+  "portfolios": {
+    "saksham10arora-dotcom": {
+      "STAR": {
+        "qty": 0.0,
+        "avg_cost": 98.0
+      },
+      "COMMIT": {
+        "qty": 0.0,
+        "avg_cost": 0.0
+      },
+      "FORK": {
+        "qty": 0.0,
+        "avg_cost": 0.0
+      }
+    }
+  },
+  "leaderboard": {
+    "saksham10arora-dotcom": {
+      "volume": 5880.0,
+      "trades": 2,
+      "pnl": 0.0
+    }
+  }
 }

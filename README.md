@@ -13,7 +13,7 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 <!-- STATS_START -->
 | Ticker | Last | Volume | Spread |
 |--------|------|--------|--------|
-| **$STAR** | -- | 0 | -- |
+| **$STAR** | 98.00 | 30 | -- |
 | **$COMMIT** | -- | 0 | -- |
 | **$FORK** | -- | 0 | -- |
 <!-- STATS_END -->
@@ -29,13 +29,13 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 
 | Bid Qty | Price | Ask Qty |
 |--------:|------:|:--------|
-| | *empty* | |
+| **20** | 100.00 |  |
 
 **Recent Trades**
 
 | Time | Price | Qty |
 |------|------:|----:|
-| | *no trades yet* | |
+| 17:42 UTC | 98.00 | 30 |
 <!-- STAR_END -->
 
 ---
@@ -83,7 +83,9 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 ## Leaderboard
 
 <!-- LEADERBOARD_START -->
-*No trades yet. Open an issue to start trading.*
+| Rank | Trader | Volume | Trades | P&L |
+|------|--------|--------|--------|-----|
+| 1 | @saksham10arora-dotcom | 5,880 | 2 | +0 |
 <!-- LEADERBOARD_END -->
 
 ---
@@ -107,5 +109,5 @@ state.json + README.md + assets/ committed to main
 - State lives in `state.json`. The repo IS the exchange.
 
 <!-- TIMESTAMP_START -->
-> Last updated: never
+> Last updated: 2026-05-25 17:42 UTC
 <!-- TIMESTAMP_END -->
