@@ -290,11 +290,30 @@ def build_leaderboard(state: dict) -> str:
     return f'<img src="assets/leaderboard.svg" width="100%">\n\n{table}'
 
 
+def build_mermaid_volume(state: dict) -> str:
+    volumes = []
+    max_vol = 0
+    for ticker in TICKERS:
+        vol = sum(t["qty"] for t in state[ticker]["trades"])
+        volumes.append(vol)
+        max_vol = max(max_vol, vol)
+    y_max = max(int(max_vol * 1.3), 10)
+    vol_list = ", ".join(str(int(v)) for v in volumes)
+    return f"""```mermaid
+xychart-beta
+  title "Volume by Ticker"
+  x-axis ["$STAR", "$COMMIT", "$FORK"]
+  y-axis "Volume" 0 --> {y_max}
+  bar [{vol_list}]
+```"""
+
+
 def update_readme(state: dict):
     with open(README_FILE) as f:
         content = f.read()
 
     content = _replace_section(content, "STATS",       build_stats_row(state))
+    content = _replace_section(content, "MERMAID",     build_mermaid_volume(state))
     for ticker in TICKERS:
         content = _replace_section(content, ticker,    build_ticker_section(state, ticker))
     content = _replace_section(content, "LEADERBOARD", build_leaderboard(state))

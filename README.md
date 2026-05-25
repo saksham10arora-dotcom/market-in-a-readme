@@ -18,6 +18,16 @@ Tickers: `$STAR` `$COMMIT` `$FORK` -- the currency of GitHub, traded on GitHub.
 | **$FORK** | 9.00 | 100 | -- |
 <!-- STATS_END -->
 
+<!-- MERMAID_START -->
+```mermaid
+xychart-beta
+  title "Volume by Ticker"
+  x-axis ["$STAR", "$COMMIT", "$FORK"]
+  y-axis "Volume" 0 --> 200
+  bar [0, 0, 0]
+```
+<!-- MERMAID_END -->
+
 ---
 
 ## $STAR
