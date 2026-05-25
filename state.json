@@ -1,26 +1,7 @@
 {
-  "bids": [
-    {
-      "side": "BUY",
-      "qty": 10.0,
-      "price": 100.0,
-      "issue": 3,
-      "ts": 1779726092.0,
-      "user": "saksham10arora-dotcom"
-    }
-  ],
-  "asks": [],
-  "trades": [
-    {
-      "price": 100.0,
-      "qty": 10.0,
-      "ts": "16:20 UTC",
-      "bid_issue": 1,
-      "ask_issue": 2
-    }
-  ],
-  "filled_issues": [
-    1,
-    2
-  ]
+  "STAR":   {"bids": [], "asks": [], "trades": [], "filled_issues": []},
+  "COMMIT": {"bids": [], "asks": [], "trades": [], "filled_issues": []},
+  "FORK":   {"bids": [], "asks": [], "trades": [], "filled_issues": []},
+  "portfolios": {},
+  "leaderboard": {}
 }
