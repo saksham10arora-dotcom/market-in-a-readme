@@ -21,7 +21,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install PyGithub
+      - name: install deps
+        run: pip install PyGithub matplotlib
 
       - name: run matching engine
         env:
@@ -29,10 +30,13 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python market.py
 
-      - name: commit state + readme
+      - name: regenerate charts
+        run: python charts.py
+
+      - name: commit changes
         run: |
           git config user.name "market-bot"
           git config user.email "market-bot@users.noreply.github.com"
-          git add state.json README.md
-          git diff --staged --quiet || git commit -m "market: update order book"
+          git add state.json README.md assets/
+          git diff --staged --quiet || git commit -m "market: update order book [skip ci]"
           git push
