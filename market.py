@@ -156,13 +156,8 @@ def main():
     repo = g.get_repo(REPO_NAME)
     state = load_state()
 
-    # Sync open issues tagged 'order' into the book
-    try:
-        label = repo.get_label(ORDER_LABEL)
-    except Exception:
-        label = repo.create_label(ORDER_LABEL, "0075ca")
-
-    open_orders = repo.get_issues(state="open", labels=[ORDER_LABEL])
+    # Sync all open issues into the book (filter by regex, no label required)
+    open_orders = repo.get_issues(state="open")
     known_issues = {o["issue"] for o in state["bids"] + state["asks"]}
 
     for issue in open_orders:
