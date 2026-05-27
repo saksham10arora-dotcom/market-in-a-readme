@@ -151,5 +151,5 @@ state.json + README.md + assets/  committed to main
 - **State:** lives in `state.json` -- the repo IS the exchange
 
 <!-- TIMESTAMP_START -->
-> Last updated: 2026-05-27 21:25 UTC
+> Last updated: 2026-05-27 22:56 UTC
 <!-- TIMESTAMP_END -->
